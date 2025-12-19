@@ -1,0 +1,16 @@
+[project]
+name = "boost-mcp"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn>=0.27",
+  "mcp>=1.0.0",
+  "databricks-sql-connector[pyarrow]>=3.0.0",
+  "databricks-sdk>=0.20.0",
+  "pandas>=2.0.0",
+  "python-dotenv>=1.0.0",
+]
+
+[tool.uv]
+dev-dependencies = []
