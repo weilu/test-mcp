@@ -16,6 +16,12 @@ mcp = FastMCP("test-mcp")
 
 
 @mcp.tool()
+def greet(name: str) -> str:
+    """Greet someone by name."""
+    return f"Hello, {name}!"
+
+
+@mcp.tool()
 async def budget_summary(
     country_name: str,
     year: int,
