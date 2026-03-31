@@ -1,6 +1,6 @@
 # Test MCP
 
-A minimal MCP (Model Context Protocol) server that exposes data from Databricks.
+A minimal MCP (Model Context Protocol) server for testing.
 
 ## Setup
 
@@ -9,15 +9,7 @@ A minimal MCP (Model Context Protocol) server that exposes data from Databricks.
    uv sync
    ```
 
-2. Create a `.env` file with your Databricks credentials:
-   ```
-   DATABRICKS_SERVER_HOSTNAME=your-workspace.cloud.databricks.com
-   DATABRICKS_HTTP_PATH=/sql/1.0/warehouses/your-warehouse-id
-   DATABRICKS_CLIENT_ID=your-client-id
-   DATABRICKS_CLIENT_SECRET=your-client-secret
-   ```
-
-3. Run locally:
+2. Run locally:
    ```bash
    uvicorn app:app --reload
    ```
@@ -26,13 +18,12 @@ A minimal MCP (Model Context Protocol) server that exposes data from Databricks.
 
 - `/mcp` - MCP protocol endpoint (Streamable HTTP)
 - `/healthz` - Health check
-- `/test/budget_summary` - HTTP test endpoint for the budget_summary tool
 
 ## MCP Tool
 
 ### `budget_summary`
 
-Query budget summary data from the BOOST database.
+Returns dummy budget summary data for testing purposes.
 
 **Parameters:**
 - `country_name` (required): Country name
@@ -42,11 +33,4 @@ Query budget summary data from the BOOST database.
 - `econ` (optional): Economic classification filter
 - `geo0` (optional): Geographic level 0 filter
 
-**Returns:** Budget metrics (approved, revised, executed, execution_rate)
-
-## Deployment
-
-Deploy to Posit Connect:
-```bash
-rsconnect deploy fastapi -n posit-connect app:app
-```
+**Returns:** Dummy budget metrics (approved, revised, executed, execution_rate)
