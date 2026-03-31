@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from mcp.server.fastmcp import FastMCP
 from databricks import sql
 from databricks.sdk.core import Config, oauth_service_principal
@@ -9,6 +10,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(title="BOOST MCP")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://claude.ai", "https://*.anthropic.com"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 mcp = FastMCP("boost-mcp")
 
