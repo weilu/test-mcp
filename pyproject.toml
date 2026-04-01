@@ -12,7 +12,7 @@ dependencies = [
   "python-dotenv>=1.0.0",
 ]
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "rsconnect>=1.28.2",
 ]

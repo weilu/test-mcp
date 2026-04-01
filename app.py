@@ -1,16 +1,8 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mcp.server.fastmcp import FastMCP
-
-app = FastAPI(title="Test MCP")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://claude.ai", "https://*.anthropic.com"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 mcp = FastMCP("test-mcp")
 
@@ -49,9 +41,23 @@ async def budget_summary(
         "execution_rate": 0.92,
     }
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with mcp.session_manager.run():
+        yield
+
+app = FastAPI(title="Test MCP", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://claude.ai", "https://*.anthropic.com"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 mcp_asgi_app = mcp.streamable_http_app()
-app.mount("/mcp", mcp_asgi_app)
+app.mount("/", mcp_asgi_app)
 
 
 @app.get("/healthz")
