@@ -3,8 +3,14 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
-mcp = FastMCP("test-mcp")
+mcp = FastMCP(
+    "test-mcp",
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=False,
+    ),
+)
 
 
 @mcp.tool()
@@ -56,12 +62,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-mcp_asgi_app = mcp.streamable_http_app()
-app.mount("/", mcp_asgi_app)
-
 
 @app.get("/healthz")
 async def healthz():
     return {"ok": True}
+
+
+mcp_asgi_app = mcp.streamable_http_app()
+app.mount("/", mcp_asgi_app)
 
 
